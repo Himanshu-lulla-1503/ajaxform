@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Form</title>
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,shrink-to-fit=no">
+		<meta charset="UTF-08">
+		<title>CNBJ|HOME</title>
+		<!--Boostrap 4 cdn link -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+		<!-- jQuery library -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<!-- Popper JS -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+		<!-- Latest compiled JavaScript -->
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+		<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+	    <link rel="icon" type="logo/png" href="img/loginlogo.png">
+	    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	    <style type="text/css">
+	    		.custom{
+	    		position: absolute;
+	    		top: 50%;
+	    		left: 50%;
+	    		transform: translate(-50%,-50%);
+	    	}
+	    	
+	    </style>
+</head>
+<body>
+	<div class="container">
+		<div class="row">
+		<div class="col-md-10 col-12 mx-auto shadow-lg custom">
+			<h1 class="display-4 text-center text-dark">Form Using Ajax</h1>
+			<form id="form1">
+				<div class="form-group mt-3">
+					<label for="username">Username</label>
+					<input type="text" id="username" class="form-control" placeholder="Enter your username" required autocomplete="off" name="username">
+				</div>
+				<div class="form-group mt-3">
+					<label for="email">Email</label>
+					<input type="email" id="email" class="form-control" placeholder="Enter your email" required name="email">
+				</div>
+				<div class="form-group">
+				<label for="State">Select Your State</label>
+				<select id="select1" class="form-control" onchange="myfunc(this.value)" name="state"> 
+					<option>Select One</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<label for="city">Select Your City</label>
+				<select id="select2" class="form-control" name="city">
+					<option>Select any one</option>
+				</select>
+			</div>
+			<button class="btn btn-success my-3 w-25" id="btn1">Submit</button>
+
+			</form>
+		</div>
+	</div>
+
+
+	</div>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			state();
+			function state(){
+				$.ajax({
+					url:'getstate.php',
+					type:'post',
+					success:function(data){
+						$('#select1').append(data);
+					}
+
+				});
+			}
+			$('#btn1').click(function(){
+				var name=$('#username').val();
+				var email=$('#email').val();
+				var s1=$('#select1').val();
+				var s2=$('#select2').val();
+				$.ajax({
+					url:'insertdata.php',
+					type:'post',
+					data:{
+						name:name,
+						email:email,
+						s1:s1,
+						s2:s2
+					},
+					success:function(data){
+						console.log(data);
+
+					}
+				})
+			})
+
+		});
+	</script>
+	<script type="text/javascript">
+			function myfunc(data){
+				$.ajax({
+					url:'getcity.php',
+					type:'post',
+					data:{
+						data:data
+					},
+					success:function(result){
+						$('#select2').html(result);
+					}
+				})
+			}
+	</script>
+
+</body>
+</html>
